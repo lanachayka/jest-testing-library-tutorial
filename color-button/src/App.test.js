@@ -29,7 +29,7 @@ describe('initial conditions', () => {
     expect(button).toBeEnabled();
   });
   test('check that the checkbox starts out unchecked', () => {
-    const checkbox = screen.getByRole('checkbox');
+    const checkbox = screen.getByRole('checkbox', {name: /disable button/i});
     expect(checkbox).not.toBeChecked();
   });
 });
@@ -40,7 +40,7 @@ describe('checkbox functionality', () => {
   beforeEach(() => {
     render(<App/>);
     button = screen.getByRole('button', {name: /change to blue/i});
-    checkbox = screen.getByRole('checkbox');
+    checkbox = screen.getByRole('checkbox', {name: /disable button/i});
     fireEvent.click(checkbox);
   });
   test('check that when checkbox checked button become disabled', () => {
@@ -49,6 +49,13 @@ describe('checkbox functionality', () => {
   test('check that when checkbox unchecked button become enabled', () => {
     fireEvent.click(checkbox);
     expect(button).toBeEnabled();
+  });
+  test('check that when checkbox checked button background become grey', () => {
+    expect(button).toHaveStyle({backgroundColor: 'grey'});
+  });
+  test('check that when checkbox unchecked button background become red', () => {
+    fireEvent.click(checkbox);
+    expect(button).toHaveStyle({backgroundColor: 'red'});
   });
 });
 
