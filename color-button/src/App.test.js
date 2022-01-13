@@ -1,7 +1,8 @@
 import {fireEvent, render, screen} from '@testing-library/react';
-import App from './App';
+import App , {replaceCamelWithSpaces} from './App';
 
-describe('test color button', () => {
+
+describe('color button functionality', () => {
   let button;
   beforeEach(() => {
     render(<App />);
@@ -56,6 +57,18 @@ describe('checkbox functionality', () => {
   test('check that when checkbox unchecked button background become red', () => {
     fireEvent.click(checkbox);
     expect(button).toHaveStyle({backgroundColor: 'red'});
+  });
+});
+
+describe('spaces before camel-case capital letters', () => {
+  test('works for no inner capital letters', () =>{
+    expect(replaceCamelWithSpaces('Red')).toBe('Red');
+  });
+  test('works for one inner capital letter', () =>{
+    expect(replaceCamelWithSpaces('MidnightBlue')).toBe('Midnight Blue');
+  });
+  test('works for multiple inner capital letters', () =>{
+    expect(replaceCamelWithSpaces('MediumVioletRed')).toBe('Medium Violet Red');
   });
 });
 
