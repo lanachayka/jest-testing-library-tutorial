@@ -1,5 +1,6 @@
 import SummaryForm from "../SummaryForm";
-import {fireEvent, render, screen} from "@testing-library/react";
+import {render, screen, waitForElementToBeRemoved} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 describe('checkbox functionality', () => {
    let button;
@@ -16,12 +17,34 @@ describe('checkbox functionality', () => {
       expect(button).toBeDisabled();
    });
    test('checking checkbox enables button', () =>{
-      fireEvent.click(checkbox);
+      userEvent.click(checkbox);
       expect(button).toBeEnabled();
    });
     test('unchecking checkbox again disables button', () =>{
-        fireEvent.click(checkbox);
-        fireEvent.click(checkbox);
-        expect(button).toBeDisabled();
+       userEvent.click(checkbox);
+       userEvent.click(checkbox);
+       expect(button).toBeDisabled();
+    });
+});
+
+describe('popover functionality', () => {
+    let termsAndConditions;
+    beforeEach(() => {
+        render(<SummaryForm />);
+        termsAndConditions = screen.getByText(/terms and conditions/i);
+    });
+    test('popover starts out hidden', () => {
+        const nullPopover = screen.queryByText(/no ice cream will actually be delivered/i);
+        expect(nullPopover).not.toBeInTheDocument();
+    });
+    test('popover appears upon mouseover of checkbox label', () => {
+        userEvent.hover(termsAndConditions);
+        const popover = screen.getByText(/no ice cream will actually be delivered/i);
+        expect(popover).toBeInTheDocument();
+    });
+    test('popover disappears when we mouseout', async() => {
+        userEvent.hover(termsAndConditions);
+        userEvent.unhover(termsAndConditions);
+        await waitForElementToBeRemoved(() => screen.queryByText(/no ice cream will actually be delivered/i));
     });
 });
