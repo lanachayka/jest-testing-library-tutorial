@@ -23,7 +23,7 @@ export default function OrderSummary({setOrderPhase}){
             <h1>Order Summary</h1>
             <h2>Scoops: {orderDetails.totals.scoops}</h2>
             <ul>{scoopList}</ul>
-            <h2>Toppings: {orderDetails.totals.toppings}</h2>
+            {orderDetails.toppings.size > 0 && <h2>Toppings: {orderDetails.totals.toppings}</h2>}
             <ul>{toppingList}</ul>
             <SummaryForm setOrderPhase={setOrderPhase} />
         </div>
