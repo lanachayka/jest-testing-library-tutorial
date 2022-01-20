@@ -17,6 +17,9 @@ export const handlers = [
                 {name: 'Cherries', imagePath: '/images/cherries.png'}
             ])
         )
+    }),
+    rest.post('http://localhost:3030/order', (req, res, ctx) => {
+        return res(ctx.json({orderNumber: 123455376}))
     })
 ]
 
